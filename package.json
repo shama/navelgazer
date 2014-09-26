@@ -1,0 +1,59 @@
+{
+  "name": "navelgazer",
+  "description": "A platform layer for gaze",
+  "version": "1.0.0",
+  "homepage": "https://github.com/shama/navelgazer",
+  "author": {
+    "name": "Kyle Robinson Young",
+    "email": "kyle@dontkry.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/shama/navelgazer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shama/navelgazer/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/shama/navelgazer/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "lib/navelgazer.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "node test/test.js",
+    "install": "node build.js",
+    "debug": "node-debug test/test.js"
+  },
+  "dependencies": {
+    "nextback": ">=0.1.0 <0.2.0-0",
+    "bindings": ">=1.2.0 <1.3.0-0",
+    "nan": ">=1.3.0 <1.4.0-0",
+    "graceful-fs": ">=3.0.2 < 3.1.0-0"
+  },
+  "devDependencies": {
+    "rimraf": ">=2.2.6 <2.3.0-0",
+    "tape": ">=2.14.0 <2.15.0-0"
+  },
+  "keywords": [
+    "watch",
+    "watcher",
+    "watching",
+    "fs.watch",
+    "fswatcher",
+    "fs",
+    "utility"
+  ],
+  "files": [
+    "index.js",
+    "src",
+    "bin",
+    "binding.gyp",
+    "AUTHORS",
+    "LICENSE-MIT"
+  ]
+}
