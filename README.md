@@ -23,29 +23,29 @@ watch(filepath, function(action, filepath) {
 
 ## API
 
-### `navelgazer(filepath, onEventCallback, watcherIsReadyCallback)`
+#### `navelgazer(filepath, onEventCallback, watcherIsReadyCallback)`
 
 Specify a `filepath` and `watcherIsReadyCallback(err, watcher)` will be called when the watcher is ready for events. `watcherIsReadyCallback(err, event, filepath, newFilePath)` will be called for each event detected on that file.
 
-### `navelgazer.mode`
+#### `navelgazer.mode`
 
 * `auto` will default to native events and fallback to stat polling if `EMFILE` is hit.
 * `watch` will only use native events and just throw `EMFILE` errors if the limit is hit.
 * `poll` will only use stat polling.
 
-### `navelgazer.closeAll()`
+#### `navelgazer.closeAll()`
 
 Closes all native and stat polled watchers.
 
-### `navelgazer.close(filepath, whenClosedCallback)`
+#### `navelgazer.close(filepath, whenClosedCallback)`
 
 Closes a single file watcher by the given `filepath` and calls `whenClosedCallback()` when it is closed.
 
-### `navelgazer.getWatchedPaths()`
+#### `navelgazer.getWatchedPaths()`
 
 Returns the file paths of every file watch by either native or stat polling.
 
-### `navelgazer.tick`
+#### `navelgazer.tick`
 
 Tick incrementer for stat poll. If stat polling, please supply an interval at which to check the files. For example:
 
