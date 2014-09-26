@@ -59,6 +59,36 @@ setInterval(navelgazer.tick.bind(navelgazer), 500);
 
 An interval of `>=500ms` is recommended as stat polling is taxing on the file system.
 
+## Benchmarks
+
+I encourage you to run and improve the benchmarks in [benchmarks/](https://github.com/shama/navelgazer/tree/master/benchmarks) (or write your own and test for yourself!)
+
+**Please remember! These benchmarks are very academic. Each library has it's own advantages and will behave differently on different file systems. As well as changing with each version.**
+
+Comparing: [fs.watch](http://nodejs.org/api/fs.html#fs_fs_watch_filename_options_listener), [chokidar](https://github.com/paulmillr/chokidar), [watch](https://github.com/mikeal/watch), [pathwatcher](https://github.com/atom/node-pathwatcher) (_I also tried [watchr](https://github.com/bevry/watchr) but had trouble getting it to respond_).
+
+```shell
+$ node benchmarks/change.js 
+
+Benchmarking single change on darwin-x64-v8-3.14...
+-------------------------------------------------------
+pathwatcher@2.1.3:  8.28ms
+fs.watch@v0.10.32:  66.35ms
+chokidar@0.9.0:   61.06ms
+navelgazer@1.0.0: 0.53ms
+watch@0.11.0:   4,006.15ms
+-------------------------------------------------------
+
+$ tree test/fixtures/
+test/fixtures/
+├── one.js
+└── renamed.js
+
+0 directories, 2 files
+```
+
+> Important note: `watch` and some of these libraries watch file trees instead of single files which could partially be the reason for some of the time.
+
 ## Release History
 * 1.0.0 - Initial release
 
