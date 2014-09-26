@@ -9,6 +9,8 @@ consistently across Windows, OSX and Linux.
 
 If you're looking for a more full featured file watching library, please use [gaze](https://github.com/shama/gaze) instead.
 
+> Thank you [Bryce](https://github.com/brycebaril) for the naming this library.
+
 ## Usage
 
 ``` javascript
