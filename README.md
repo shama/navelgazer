@@ -5,7 +5,7 @@ consistently across Windows, OSX and Linux.
 
 ## About
 
-**navelgazer** is a super fast, light weight and simple file watcher. It will only ever emit `change`, `delete` and `renamed` events. This library is ideal if you're looking for a stable platform to build your own file watcher.
+**navelgazer** is a super fast, light weight and simple file watcher. It will only ever emit `change`, `delete` and `rename` events. This library is ideal if you're looking for a stable platform to build your own file watcher.
 
 If you're looking for a more full featured file watching library, please use [gaze](https://github.com/shama/gaze) instead.
 
@@ -28,6 +28,8 @@ watch(filepath, function(action, filepath) {
 #### `navelgazer(filepath, onEventCallback, watcherIsReadyCallback)`
 
 Specify a `filepath` and `watcherIsReadyCallback(err, watcher)` will be called when the watcher is ready for events. `watcherIsReadyCallback(err, event, filepath, newFilePath)` will be called for each event detected on that file.
+
+Events emitted are either `change`, `delete`, or `rename`.
 
 #### `navelgazer.mode`
 
