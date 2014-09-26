@@ -72,11 +72,11 @@ $ node benchmarks/change.js
 
 Benchmarking single change on darwin-x64-v8-3.14...
 -------------------------------------------------------
-pathwatcher@2.1.3:  8.28ms
-fs.watch@v0.10.32:  66.35ms
-chokidar@0.9.0:   61.06ms
-navelgazer@1.0.0: 0.53ms
-watch@0.11.0:   4,006.15ms
+pathwatcher@2.1.3:      8.28ms
+fs.watch@v0.10.32:     66.35ms
+chokidar@0.9.0:        61.06ms
+navelgazer@1.0.0:       0.53ms
+watch@0.11.0:       4,006.15ms
 -------------------------------------------------------
 
 $ tree test/fixtures/
