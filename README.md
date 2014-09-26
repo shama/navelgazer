@@ -89,7 +89,7 @@ test/fixtures/
 
 > Important note: `watch` and some of these libraries watch file trees instead of single files which could partially be the reason for some of the time.
 
-> Important note: `pathwatcher` is the library this one was forked from. It was forked as their use case is primarily to support file watching in the atom editor.
+> Important note: `pathwatcher` is the library this one was forked from. It was forked as their use case is primarily to support file watching in the atom editor. Mine is to support gaze.
 
 ## Release History
 * 1.0.0 - Initial release
