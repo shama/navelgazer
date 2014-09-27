@@ -59,6 +59,36 @@ setInterval(navelgazer.tick.bind(navelgazer), 500);
 
 An interval of `>=500ms` is recommended as stat polling is taxing on the file system.
 
+## Build
+
+navelgazer comes with pre-built binaries for common architectures. If you would like to build the Node.js addon yourself, the following is required:
+
+#### OSX
+
+* Mac OS X >= 10.8
+* Xcode >= 5.1
+* Node.js x64
+
+#### Windows
+
+* Windows 2008 at least
+* Visual Studio 2013
+* Python 2.7
+* Node.js ia32
+
+#### Linux
+
+* Node.js
+* clang, development headers of GTK+ and libnotify
+
+### Build CLI
+
+Run the following command to force build the native addon instead of using the prebuilt binary:
+
+``` shell
+$ node node_modules/navelgazer/build.js --force
+```
+
 ## Benchmarks
 
 I encourage you to run and improve the benchmarks in [benchmarks/](https://github.com/shama/navelgazer/tree/master/benchmarks) (or write your own and test for yourself!)
