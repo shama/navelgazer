@@ -53,7 +53,7 @@
     "utility"
   ],
   "files": [
-    "index.js",
+    "lib",
     "src",
     "bin",
     "binding.gyp",
