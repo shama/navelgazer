@@ -67,10 +67,10 @@ void PlatformThread() {
 
       // Note that inotify won't tell us where the file or directory has been
       // moved to, so we just treat IN_MOVE_SELF as file being deleted.
-      if (e->mask & (IN_ATTRIB | IN_CREATE | IN_DELETE | IN_MODIFY | IN_MOVE)) {
-        type = EVENT_CHANGE;
-      } else if (e->mask & (IN_DELETE_SELF | IN_MOVE_SELF)) {
+      if (e->mask & (IN_DELETE | IN_DELETE_SELF | IN_MOVE_SELF)) {
         type = EVENT_DELETE;
+      } else if (e->mask & (IN_ATTRIB | IN_CREATE | IN_MODIFY | IN_MOVE)) {
+        type = EVENT_CHANGE;
       } else {
         continue;
       }
