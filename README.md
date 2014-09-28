@@ -9,6 +9,8 @@ consistently across Windows, OSX and Linux.
 
 If you're looking for a more full featured file watching library, please use [gaze](https://github.com/shama/gaze) instead.
 
+[![NPM](https://nodei.co/npm/navelgazer.png?downloads=true)](https://nodei.co/npm/navelgazer/)
+
 ## Usage
 
 ``` javascript
