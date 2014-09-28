@@ -25,9 +25,9 @@
     "node": ">= 0.10.0"
   },
   "scripts": {
-    "test": "node test/test.js",
+    "test": "node test/all.js",
     "install": "node build.js",
-    "debug": "node-debug test/test.js"
+    "debug": "node-debug test/all.js"
   },
   "dependencies": {
     "nextback": ">=0.1.0 <0.2.0-0",
