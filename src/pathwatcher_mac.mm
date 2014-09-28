@@ -50,7 +50,7 @@ void PlatformThread() {
     int fd = static_cast<int>(event.ident);
     std::vector<char> path;
 
-    if (event.fflags & NOTE_WRITE) {
+    if (event.fflags & (NOTE_WRITE | NOTE_ATTRIB)) {
       type = EVENT_CHANGE;
     } else if (event.fflags & NOTE_DELETE) {
       type = EVENT_DELETE;
@@ -63,10 +63,6 @@ void PlatformThread() {
       int length = strlen(buffer);
       path.resize(length);
       std::copy(buffer, buffer + length, path.data());
-    } else if (event.fflags & NOTE_ATTRIB && lseek(fd, 0, SEEK_END) == 0) {
-      // The file became empty, this does not fire as a NOTE_WRITE event for
-      // some reason.
-      type = EVENT_CHANGE;
     } else {
       continue;
     }
