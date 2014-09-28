@@ -27,7 +27,8 @@
   "scripts": {
     "test": "node test/all.js",
     "install": "node build.js",
-    "debug": "node-debug test/all.js"
+    "debug": "node-debug test/all.js",
+    "buildtest": "node build.js --force && npm test"
   },
   "dependencies": {
     "nextback": ">=0.1.0 <0.2.0-0",
