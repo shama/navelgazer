@@ -87,29 +87,31 @@ test('will detect delete (native and statpoll)', function(t) {
   }());
 });
 
-// TODO: Skip for linux atm, get rename support man!
-if (process.platform !== 'linux') {
-  test('will detect rename (only native for now)', function(t) {
-    t.plan(15);
-    var count = 0;
-    var beforefile = path.resolve(fixtures, 'added.js');
-    var expected = path.resolve(fixtures, 'renamed.js');
+test('will detect rename (only native for now)', function(t) {
+  t.plan(15);
+  var count = 0;
+  var beforefile = path.resolve(fixtures, 'added.js');
+  var expected = path.resolve(fixtures, 'renamed.js');
 
-    function addFile(cb) {
-      if (fs.existsSync(beforefile)) fs.unlinkSync(beforefile);
-      if (fs.existsSync(expected)) fs.unlinkSync(expected);
-      fs.writeFile(beforefile, 'var added = true;', function(err) {
-        process.nextTick(cb);
-      });
-    }
+  function addFile(cb) {
+    if (fs.existsSync(beforefile)) fs.unlinkSync(beforefile);
+    if (fs.existsSync(expected)) fs.unlinkSync(expected);
+    fs.writeFile(beforefile, 'var added = true;', function(err) {
+      process.nextTick(cb);
+    });
+  }
 
-    function renameFile() {
-      fs.renameSync(beforefile, expected);
-      count++;
-    }
+  function renameFile() {
+    fs.renameSync(beforefile, expected);
+    count++;
+  }
 
-    (function watchAndRename() {
-      addFile(function() {
+  (function watchAndRename() {
+    addFile(function() {
+      // Linux must watch dir where files are moved to in order for rename to work
+      watch(path.dirname(beforefile), function() {
+        console.log('JUST A CHANGEON THE DIR')
+      }, function() {
         watch(beforefile, function(err, action, filepath, newPath) {
           t.equal(action, 'rename', 'action should have been rename');
           t.equal(beforefile, filepath, 'filepath should have equaled before renamed filepath');
@@ -125,6 +127,7 @@ if (process.platform !== 'linux') {
           renameFile();
         });
       });
-    }());
-  });
-}
+      
+    });
+  }());
+});

@@ -64,12 +64,21 @@ void PlatformThread() {
       int fd = e->wd;
       EVENT_TYPE type;
       std::vector<char> path;
+      std::string newpath = e->name;
 
-      // Note that inotify won't tell us where the file or directory has been
-      // moved to, so we just treat IN_MOVE_SELF as file being deleted.
-      if (e->mask & (IN_DELETE | IN_DELETE_SELF | IN_MOVE_SELF)) {
+      if (e->mask & (IN_MOVED_TO)) {
+        // A file has moved into a watched dir
+        type = EVENT_LINUX_RENAMEIN;
+        std::vector<char> new_path_charvect(newpath.begin(), newpath.end());
+        PostEventAndWait(type, fd, path, new_path_charvect);
+      }
+
+      if (e->mask & (IN_MOVE_SELF)) {
+        // Watched file has moved somewhere
+        type = EVENT_LINUX_RENAMEOUT;
+      } else if (e->mask & (IN_DELETE | IN_DELETE_SELF)) {
         type = EVENT_DELETE;
-      } else if (e->mask & (IN_ATTRIB | IN_CREATE | IN_MODIFY | IN_MOVE)) {
+      } else if (e->mask & (IN_ATTRIB | IN_CREATE | IN_MODIFY)) {
         type = EVENT_CHANGE;
       } else {
         continue;
@@ -82,7 +91,7 @@ void PlatformThread() {
 
 WatcherHandle PlatformWatch(const char* path) {
   int fd = inotify_add_watch(g_inotify, path, IN_ATTRIB | IN_CREATE |
-      IN_DELETE | IN_MODIFY | IN_MOVE | IN_MOVE_SELF | IN_DELETE_SELF);
+      IN_DELETE | IN_MODIFY | IN_MOVED_TO | IN_MOVE_SELF | IN_DELETE_SELF);
   return fd;
 }
 

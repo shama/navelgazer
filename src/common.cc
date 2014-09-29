@@ -68,6 +68,12 @@ static void MakeCallbackInMainThread(uv_async_t* handle, int status) {
       case EVENT_CHILD_RENAME:
         type = NanNew("child-rename");
         break;
+      case EVENT_LINUX_RENAMEOUT:
+        type = NanNew("linux-renameout");
+        break;
+      case EVENT_LINUX_RENAMEIN:
+        type = NanNew("linux-renamein");
+        break;
       default:
         type = NanNew("unknown");
         return;
