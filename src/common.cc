@@ -142,7 +142,7 @@ NAN_METHOD(Watch) {
   if (!PlatformIsHandleValid(handle))
     return NanThrowTypeError("Unable to watch path");
 
-  opened++;
+  ++opened;
   NanReturnValue(WatcherHandleToV8Value(handle));
 }
 
@@ -153,7 +153,7 @@ NAN_METHOD(Unwatch) {
     return NanThrowTypeError("Handle type required");
 
   PlatformUnwatch(V8ValueToWatcherHandle(args[0]));
-  opened--;
+  --opened;
 
   // If no more files are opened, close thread
   if (opened < 1)
