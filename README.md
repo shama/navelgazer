@@ -16,7 +16,7 @@ If you're looking for a more full featured file watching library, please use [ga
 ``` javascript
 var watch = require('navelgazer');
 
-watch(filepath, function(action, filepath) {
+watch(filepath, function(err, action, filepath) {
   // Called when file is changed
 }, function(err, watcher) {
   // Watcher is ready
