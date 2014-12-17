@@ -24,8 +24,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 namespace {
 
 void Init(Handle<Object> exports) {
-  //CommonInit();
-  //PlatformInit();
+  CommonInit();
+  PlatformInit();
 
   NODE_SET_METHOD(exports, "setCallback", SetCallback);
   NODE_SET_METHOD(exports, "watch", Watch);

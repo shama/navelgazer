@@ -21,6 +21,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "common.h"
 
 static uv_async_t g_async;
+static int g_watch_count;
 static uv_sem_t g_semaphore;
 static uv_thread_t g_thread;
 
@@ -29,8 +30,6 @@ static WatcherHandle g_handle;
 static std::vector<char> g_new_path;
 static std::vector<char> g_old_path;
 static Persistent<Function> g_callback;
-
-static int opened = 0;
 
 static void CommonThread(void* handle) {
   WaitForMainThread();
@@ -85,9 +84,22 @@ static void MakeCallbackInMainThread(uv_async_t* handle, int status) {
   WakeupNewThread();
 }
 
+static void SetRef(bool value) {
+  uv_handle_t* h = reinterpret_cast<uv_handle_t*>(&g_async);
+  if (value) {
+    uv_ref(h);
+  } else {
+    uv_unref(h);
+  }
+}
+
 void CommonInit() {
   uv_sem_init(&g_semaphore, 0);
   uv_async_init(uv_default_loop(), &g_async, MakeCallbackInMainThread);
+  // As long as any uv_ref'd uv_async_t handle remains active, the node
+  // process will never exit, so we must call uv_unref here (#47).
+  SetRef(false);
+  g_watch_count = 0;
   uv_thread_create(&g_thread, &CommonThread, NULL);
 }
 
@@ -126,12 +138,6 @@ NAN_METHOD(SetCallback) {
 NAN_METHOD(Watch) {
   NanScope();
 
-  // If no files opened, start up thread
-  if (opened < 1) {
-    CommonInit();
-    PlatformInit();
-  }
-
   if (!args[0]->IsString())
     return NanThrowTypeError("String required");
 
@@ -142,7 +148,10 @@ NAN_METHOD(Watch) {
   if (!PlatformIsHandleValid(handle))
     return NanThrowTypeError("Unable to watch path");
 
-  ++opened;
+  if (g_watch_count++ == 0) {
+    SetRef(true);
+  }
+
   NanReturnValue(WatcherHandleToV8Value(handle));
 }
 
@@ -153,11 +162,10 @@ NAN_METHOD(Unwatch) {
     return NanThrowTypeError("Handle type required");
 
   PlatformUnwatch(V8ValueToWatcherHandle(args[0]));
-  --opened;
 
-  // If no more files are opened, close thread
-  if (opened < 1)
-    uv_close((uv_handle_t*) &g_async, NULL);
+  if (--g_watch_count == 0) {
+    SetRef(false);
+  }
 
   NanReturnUndefined();
 }
