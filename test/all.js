@@ -2,7 +2,7 @@ var path = require('path');
 var tests = [
   'multi',
   'events',
-  'attrib',
+  //'attrib',
 ];
 
 var limit = process.argv[2];
