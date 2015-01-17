@@ -36,7 +36,7 @@ if (force && fs.existsSync(installPath)) {
   fs.unlinkSync(installPath);
 }
 if (!fs.existsSync(installPath)) {
-  var child = spawn(process.platform === 'win32' ? 'node-gyp.cmd' : 'node-gyp', ['rebuild'].concat(args), {customFds: [0, 1, 2]});
+  var child = spawn(process.platform === 'win32' ? 'node-gyp.cmd' : 'node-gyp', ['rebuild'].concat(args), { stdio: 'inherit' });
   child.on('exit', function(err) {
     if (err) {
       if (err === 127) {
