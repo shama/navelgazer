@@ -71,7 +71,7 @@ Please see the [Benchmarks page in the wiki](https://github.com/shama/navelgazer
 * 1.0.0 - Initial release
 
 ## License
-Copyright (c) 2014 Kyle Robinson Young  
+Copyright (c) 2015 Kyle Robinson Young  
 Licensed under the MIT license.
 
 > Thank you [Bryce](https://github.com/brycebaril) for the naming this library.
