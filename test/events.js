@@ -9,7 +9,7 @@ var fixtures = path.resolve(__dirname, 'fixtures');
 test('will detect change (native and statpoll)', function(t) {
   t.plan(20);
   var count = 0;
-  var tick = null;
+  var tick = setInterval(watch.tick.bind(watch), 500);
   var expected = path.resolve(fixtures, 'one.js');
   function writeFile() {
     fs.writeFileSync(expected, 'var one = true;');
@@ -20,15 +20,14 @@ test('will detect change (native and statpoll)', function(t) {
       t.equal(action, 'change', 'action should have been changed (mode is ' + watch.mode + ')');
       t.equal(expected, filepath, 'filepath should have matched expected (mode is ' + watch.mode + ')');
       watch.closeAll();
-      clearInterval(tick);
       watch.mode = 'auto';
       if (count < 5) {
         watchAndChange();
       } else if (count < 10) {
         watch.mode = 'poll';
-        tick = setInterval(watch.tick.bind(watch), 500);
         setTimeout(watchAndChange, 500);
       } else {
+        clearInterval(tick);
         t.end();
       }
     }, function() {
@@ -44,7 +43,7 @@ test('will detect change (native and statpoll)', function(t) {
 test('will detect delete (native and statpoll)', function(t) {
   t.plan(20);
   var count = 0;
-  var tick = null;
+  var tick = setInterval(watch.tick.bind(watch), 500);
   var expected = path.resolve(fixtures, 'added.js');
 
   function addFile(cb) {
@@ -65,15 +64,14 @@ test('will detect delete (native and statpoll)', function(t) {
         t.equal(action, 'delete', 'action should have been delete (mode is ' + watch.mode + ')');
         t.equal(expected, filepath, 'filepath should have matched expected (mode is ' + watch.mode + ')');
         watch.closeAll();
-        clearInterval(tick);
         watch.mode = 'auto';
         if (count < 5) {
           watchAndDelete();
         } else if (count < 10) {
           watch.mode = 'poll';
-          tick = setInterval(watch.tick.bind(watch), 500);
           setTimeout(watchAndDelete, 500);
         } else {
+          clearInterval(tick);
           t.end();
         }
       }, function(err) {
