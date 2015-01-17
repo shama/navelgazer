@@ -75,8 +75,8 @@ static void MakeCallbackInMainThread(uv_async_t* handle, int status) {
     Handle<Value> argv[] = {
         type,
         WatcherHandleToV8Value(g_handle),
-        NanNew(g_new_path.data(), g_new_path.size()),
-        NanNew(g_old_path.data(), g_old_path.size()),
+        NanNew(std::string(g_new_path.begin(), g_new_path.end())),
+        NanNew(std::string(g_old_path.begin(), g_old_path.end())),
     };
     NanNew(g_callback)->Call(NanGetCurrentContext()->Global(), 4, argv);
   }
