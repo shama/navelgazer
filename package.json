@@ -25,7 +25,7 @@
     "node": ">= 0.10.0"
   },
   "scripts": {
-    "test": "node test/all.js",
+    "test": "node test/all.js | tap-spec",
     "install": "node build.js",
     "debug": "node-debug test/all.js",
     "buildtest": "node build.js --force && npm test"
@@ -40,10 +40,11 @@
     "chokidar": "0.9.0",
     "pathwatcher": "2.1.3",
     "rimraf": ">=2.2.6 <2.3.0-0",
+    "tap-spec": ">=2.1.2 <2.2.0-0",
     "tape": ">=2.14.0 <2.15.0-0",
+    "touch": "0.0.3",
     "watch": "0.11.0",
-    "watchr": "2.4.11",
-    "touch": "0.0.3"
+    "watchr": "2.4.11"
   },
   "keywords": [
     "watch",
