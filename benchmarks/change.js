@@ -104,6 +104,7 @@ corefswatch(function(ms) {
 });
 chokidar(function(ms) {
   console.log('chokidar@' + pkg.devDependencies['chokidar'] + ':\t\t' + ms);
+  console.log('NOTE: chokidar throttles change events at 50ms to resolve stability issues');
 });
 // TODO: Not working for me on OSX atm
 // watchr(function(ms) {
