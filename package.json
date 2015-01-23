@@ -59,6 +59,7 @@
     "lib",
     "src",
     "bin",
+    "build.js",
     "binding.gyp",
     "AUTHORS",
     "LICENSE-MIT"
