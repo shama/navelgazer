@@ -1,4 +1,4 @@
-# navelgazer [![Build Status](http://img.shields.io/travis/shama/navelgazer.svg)](https://travis-ci.org/shama/navelgazer) [![Build status](https://ci.appveyor.com/api/projects/status/b7o6whgrdtwpyh6e/branch/master)](https://ci.appveyor.com/project/shama/navelgazer) [![gittip.com/shama](http://img.shields.io/gittip/shama.svg)](https://www.gittip.com/shama)
+# navelgazer [![Build Status](http://img.shields.io/travis/shama/navelgazer.svg)](https://travis-ci.org/shama/navelgazer) [![Build status](https://ci.appveyor.com/api/projects/status/b7o6whgrdtwpyh6e/branch/master)](https://ci.appveyor.com/project/shama/navelgazer)
 
 A platform layer for [gaze](https://github.com/shama/gaze). Watch files
 consistently across Windows, OSX and Linux.
