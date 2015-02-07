@@ -63,10 +63,6 @@ An interval of `>=500ms` is recommended as stat polling is taxing on the file sy
 
 Please see the [Building page in the wiki](https://github.com/shama/navelgazer/wiki/Building).
 
-## Benchmarks
-
-Please see the [Benchmarks page in the wiki](https://github.com/shama/navelgazer/wiki/Benchmarks).
-
 ## Release History
 * 1.1.1 - Add missing build.js script to package.json
 * 1.1.0 - Updates for node v0.11 and io.js 1.0. Add pre-built binaries and many other minor fixes.
