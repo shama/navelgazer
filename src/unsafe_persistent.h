@@ -53,7 +53,8 @@ NAN_INLINE void NanAssignUnsafePersistent(
 }
 template<typename T>
 NAN_INLINE v8::Local<T> NanUnsafePersistentToLocal(const NanUnsafePersistent<T> &arg1) {
-  return v8::Local<T>::New(v8::Isolate::GetCurrent(), arg1);
+  Nan::EscapableHandleScope scope;
+  return scope.Escape(v8::Local<T>::New(v8::Isolate::GetCurrent(), arg1));
 }
 #define NanDisposeUnsafePersistent(handle) handle.Reset()
 #else

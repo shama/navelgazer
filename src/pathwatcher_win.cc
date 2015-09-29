@@ -28,7 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 static const unsigned int kDirectoryWatcherBufferSize = 4096;
 
 // Object template to create representation of WatcherHandle.
-static Persistent<ObjectTemplate> g_object_template;
+static Nan::Persistent<ObjectTemplate> g_object_template;
 
 // Mutex for the HandleWrapper map.
 static uv_mutex_t g_handle_wrap_map_mutex;
@@ -116,18 +116,18 @@ static bool QueueReaddirchanges(HandleWrapper* handle) {
                                NULL) == TRUE;
 }
 
-Handle<Value> WatcherHandleToV8Value(WatcherHandle handle) {
-  Handle<Value> value = NanNew(g_object_template)->NewInstance();
-  NanSetInternalFieldPointer(value->ToObject(), 0, handle);
+Local<Value> WatcherHandleToV8Value(WatcherHandle handle) {
+  Local<Value> value = Nan::New(g_object_template)->NewInstance();
+  Nan::SetInternalFieldPointer(value->ToObject(), 0, handle);
   return value;
 }
 
-WatcherHandle V8ValueToWatcherHandle(Handle<Value> value) {
-  return reinterpret_cast<WatcherHandle>(NanGetInternalFieldPointer(
+WatcherHandle V8ValueToWatcherHandle(Local<Value> value) {
+  return reinterpret_cast<WatcherHandle>(Nan::GetInternalFieldPointer(
       value->ToObject(), 0));
 }
 
-bool IsV8ValueWatcherHandle(Handle<Value> value) {
+bool IsV8ValueWatcherHandle(Local<Value> value) {
   return value->IsObject() && value->ToObject()->InternalFieldCount() == 1;
 }
 
@@ -137,8 +137,8 @@ void PlatformInit() {
   g_wake_up_event = CreateEvent(NULL, FALSE, FALSE, NULL);
   g_events.push_back(g_wake_up_event);
 
-  NanAssignPersistent(g_object_template, ObjectTemplate::New());
-  NanNew(g_object_template)->SetInternalFieldCount(1);
+  g_object_template.Reset(ObjectTemplate::New());
+  Nan::New(g_object_template)->SetInternalFieldCount(1);
 
   WakeupNewThread();
 }

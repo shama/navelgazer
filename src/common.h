@@ -31,14 +31,14 @@ using namespace v8;
 typedef HANDLE WatcherHandle;
 
 // Conversion between V8 value and WatcherHandle.
-Handle<Value> WatcherHandleToV8Value(WatcherHandle handle);
-WatcherHandle V8ValueToWatcherHandle(Handle<Value> value);
-bool IsV8ValueWatcherHandle(Handle<Value> value);
+Local<Value> WatcherHandleToV8Value(WatcherHandle handle);
+WatcherHandle V8ValueToWatcherHandle(Local<Value> value);
+bool IsV8ValueWatcherHandle(Local<Value> value);
 #else
 // Correspoding definetions on OS X and Linux.
 typedef int32_t WatcherHandle;
-#define WatcherHandleToV8Value(h) NanNew<Integer>(h)
-#define V8ValueToWatcherHandle(v) v->Int32Value()
+#define WatcherHandleToV8Value(h) Nan::New<Integer>(h)
+#define V8ValueToWatcherHandle(v) Nan::To<uint32_t>(v).FromJust()
 #define IsV8ValueWatcherHandle(v) v->IsInt32()
 #endif
 
@@ -69,9 +69,8 @@ void PostEventAndWait(EVENT_TYPE type,
 
 void CommonInit();
 
-NAN_METHOD(SetCallback);
-NAN_METHOD(Watch);
-NAN_METHOD(Unwatch);
+void SetCallback(const Nan::FunctionCallbackInfo<v8::Value>& args);
+void Watch(const Nan::FunctionCallbackInfo<v8::Value>& args);
+void Unwatch(const Nan::FunctionCallbackInfo<v8::Value>& args);
 
 #endif  // SRC_COMMON_H_
-

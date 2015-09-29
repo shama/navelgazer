@@ -23,13 +23,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace {
 
-void Init(Handle<Object> exports) {
+void Init(Local<Object> exports) {
   CommonInit();
   PlatformInit();
 
-  NODE_SET_METHOD(exports, "setCallback", SetCallback);
-  NODE_SET_METHOD(exports, "watch", Watch);
-  NODE_SET_METHOD(exports, "unwatch", Unwatch);
+  Nan::SetMethod(exports, "setCallback", SetCallback);
+  Nan::SetMethod(exports, "watch", Watch);
+  Nan::SetMethod(exports, "unwatch", Unwatch);
 
   HandleMap::Initialize(exports);
 }

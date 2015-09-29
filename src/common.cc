@@ -29,7 +29,7 @@ static EVENT_TYPE g_type;
 static WatcherHandle g_handle;
 static std::vector<char> g_new_path;
 static std::vector<char> g_old_path;
-static Persistent<Function> g_callback;
+static Nan::Persistent<Function> g_callback;
 
 static void CommonThread(void* handle) {
   WaitForMainThread();
@@ -41,44 +41,44 @@ static void MakeCallbackInMainThread(uv_async_t* handle) {
 #else
 static void MakeCallbackInMainThread(uv_async_t* handle, int status) {
 #endif
-  NanScope();
+  Nan::HandleScope scope;
 
   if (!g_callback.IsEmpty()) {
-    Handle<String> type;
+    Local<String> type;
     switch (g_type) {
       case EVENT_CHANGE:
-        type = NanNew("change");
+        type = Nan::New("change").ToLocalChecked();
         break;
       case EVENT_DELETE:
-        type = NanNew("delete");
+        type = Nan::New("delete").ToLocalChecked();
         break;
       case EVENT_RENAME:
-        type = NanNew("rename");
+        type = Nan::New("rename").ToLocalChecked();
         break;
       case EVENT_CHILD_CREATE:
-        type = NanNew("child-create");
+        type = Nan::New("child-create").ToLocalChecked();
         break;
       case EVENT_CHILD_CHANGE:
-        type = NanNew("child-change");
+        type = Nan::New("child-change").ToLocalChecked();
         break;
       case EVENT_CHILD_DELETE:
-        type = NanNew("child-delete");
+        type = Nan::New("child-delete").ToLocalChecked();
         break;
       case EVENT_CHILD_RENAME:
-        type = NanNew("child-rename");
+        type = Nan::New("child-rename").ToLocalChecked();
         break;
       default:
-        type = NanNew("unknown");
+        type = Nan::New("unknown").ToLocalChecked();
         return;
     }
 
-    Handle<Value> argv[] = {
+    Local<Value> argv[] = {
         type,
         WatcherHandleToV8Value(g_handle),
-        NanNew(std::string(g_new_path.begin(), g_new_path.end())),
-        NanNew(std::string(g_old_path.begin(), g_old_path.end())),
+        Nan::New(std::string(g_new_path.begin(), g_new_path.end())).ToLocalChecked(),
+        Nan::New(std::string(g_old_path.begin(), g_old_path.end())).ToLocalChecked(),
     };
-    NanNew(g_callback)->Call(NanGetCurrentContext()->Global(), 4, argv);
+    Nan::New(g_callback)->Call(Nan::GetCurrentContext()->Global(), 4, argv);
   }
 
   WakeupNewThread();
@@ -125,47 +125,44 @@ void PostEventAndWait(EVENT_TYPE type,
   WaitForMainThread();
 }
 
-NAN_METHOD(SetCallback) {
-  NanScope();
+void SetCallback(const Nan::FunctionCallbackInfo<v8::Value>& args) {
+  Nan::HandleScope scope;
 
   if (!args[0]->IsFunction())
-    return NanThrowTypeError("Function required");
+    return Nan::ThrowTypeError("Function required");
 
-  NanAssignPersistent(g_callback, Local<Function>::Cast(args[0]));
-  NanReturnUndefined();
+  g_callback.Reset(Local<Function>::Cast(args[0]));
 }
 
-NAN_METHOD(Watch) {
-  NanScope();
+void Watch(const Nan::FunctionCallbackInfo<v8::Value>& args) {
+  Nan::HandleScope scope;
 
   if (!args[0]->IsString())
-    return NanThrowTypeError("String required");
+    return Nan::ThrowTypeError("String required");
 
-  Handle<String> path = args[0]->ToString();
+  Local<String> path = args[0]->ToString();
   WatcherHandle handle = PlatformWatch(*String::Utf8Value(path));
   if (PlatformIsEMFILE(handle))
-    return NanThrowTypeError("EMFILE: Unable to watch path");
+    return Nan::ThrowTypeError("EMFILE: Unable to watch path");
   if (!PlatformIsHandleValid(handle))
-    return NanThrowTypeError("Unable to watch path");
+    return Nan::ThrowTypeError("Unable to watch path");
 
   if (g_watch_count++ == 0) {
     SetRef(true);
   }
 
-  NanReturnValue(WatcherHandleToV8Value(handle));
+  args.GetReturnValue().Set(WatcherHandleToV8Value(handle));
 }
 
-NAN_METHOD(Unwatch) {
-  NanScope();
+void Unwatch(const Nan::FunctionCallbackInfo<v8::Value>& args) {
+  Nan::HandleScope scope;
 
   if (!IsV8ValueWatcherHandle(args[0]))
-    return NanThrowTypeError("Handle type required");
+    return Nan::ThrowTypeError("Handle type required");
 
   PlatformUnwatch(V8ValueToWatcherHandle(args[0]));
 
   if (--g_watch_count == 0) {
     SetRef(false);
   }
-
-  NanReturnUndefined();
 }
