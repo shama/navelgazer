@@ -26,9 +26,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "common.h"
 #include "unsafe_persistent.h"
 
-class HandleMap : public node::ObjectWrap {
+class HandleMap : public Nan::ObjectWrap {
  public:
-  static void Initialize(Handle<Object> target);
+  static void Initialize(Local<Object> target);
 
  private:
   typedef std::map<WatcherHandle, NanUnsafePersistent<Value> > Map;
@@ -42,13 +42,13 @@ class HandleMap : public node::ObjectWrap {
 
   static void DisposeHandle(NanUnsafePersistent<Value>& value);
 
-  static NAN_METHOD(New);
-  static NAN_METHOD(Add);
-  static NAN_METHOD(Get);
-  static NAN_METHOD(Has);
-  static NAN_METHOD(Values);
-  static NAN_METHOD(Remove);
-  static NAN_METHOD(Clear);
+  static void New(const Nan::FunctionCallbackInfo<v8::Value>& args);
+  static void Add(const Nan::FunctionCallbackInfo<v8::Value>& args);
+  static void Get(const Nan::FunctionCallbackInfo<v8::Value>& args);
+  static void Has(const Nan::FunctionCallbackInfo<v8::Value>& args);
+  static void Values(const Nan::FunctionCallbackInfo<v8::Value>& args);
+  static void Remove(const Nan::FunctionCallbackInfo<v8::Value>& args);
+  static void Clear(const Nan::FunctionCallbackInfo<v8::Value>& args);
 
   Map map_;
 };
